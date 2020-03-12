@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            console.log("Hello World");
+            console.log($(window).attr("location"));
+            var href=$(window).attr("location").href;
+
+            var index=href.lastIndexOf("/");
+            var id=href.substr(index+1,href.length-index-1);
+            console.log("id:"+id);
+            $.ajax({
+                type:'POST',
+                url:'/get/'+id,
+                dataType:'json',
+                data:{_csrf:$("#csrf").val()},
+                success:function(result){
+                    $(".articleTitle")[0].innerText=result.title;
+                    $(".authorName")[0].innerText=result.userName;
+                    $(".articleContent")[0].innerText=result.content;
+                    if(result.comments!=null){
+                        //下面要搭建评论系统的事情
+                    }
+                },
+                error:function(result){
+                    var info=$(document)[0].createElement("div");
+                    info.innerText="请求失败";
+                    $(".article")[0].appendChild(info);
+                }
+            });});
+    </script>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
+        }
+        .article{
+            display: block;
+            position: relative;
+            width:50%;
+            margin:20px auto;
+            height: auto;
+            background: white;
+            overflow: hidden;
+        }
+        .articleHeader{
+            display: block;
+            position: relative;
+            height: 30px;
+            margin-bottom: 5px;
+            background-color: #8f928f;
+        }
+        .articleHeader > *{
+            color: #faf4f4;
+        }
+        .articleTitle{
+            float: left;
+        }
+        .authorName{
+            float: right;
+            margin-right: 5px;
+        }
+        .articleContent{
+            height: 65px;
+        }
+    </style>
+</head>
+<body>
+<div id="atTheCenter">
+    <div class="article">
+        <div class="articleHeader">
+            <p class="articleTitle">
+            </p>
+            <p class="authorName">
+            </p>
+        </div>
+        <div class="articleContent">
+        </div>
+    </div>
+    <div id="comments">
+        <div class="com"></div>
+    </div>
+</div>
+<input th:attr="name=${_csrf.getParameterName()},value=${_csrf.getToken()}" type="hidden" id="csrf">
+</body>
+</html>

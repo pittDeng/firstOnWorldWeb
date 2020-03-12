@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #atTheCenter{
+            position: relative;
+            width: 800px;
+            height: 500px;
+            margin: 10px auto;
+            color:black;
+        }
+        #title {
+            height: 30px;
+            width: 100%;
+        }
+        #titleText{
+            width:700px;
+        }
+        textarea{
+            margin: 20px 10px;
+            width: 780px;
+            height: 450px;
+            resize: none;
+        }
+        button{
+            display: block;
+            margin: auto;
+            width: 100px;
+            height: 40px;
+            font-size: 25px;
+            alignment: center;
+        }
+    </style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/writeArticle.js"></script>
+</head>
+<body>
+<div id="atTheCenter">
+<div id="title">
+    <table>
+        <tr>
+            <td><label>标题：</label></td>
+            <td><input type="text" placeholder="请输入标题" id="titleText"></td>
+        </tr>
+    </table>
+</div>
+    <div id="content">
+        <textarea placeholder="请输入内容" id="contentText"></textarea>
+    </div>
+    <div id="post">
+        <button id="postButton">提交</button>
+        <input th:attr="name=${_csrf.getParameterName()},value=${_csrf.getToken()}" type="hidden" id="csrf">
+    </div>
+</div>
+</body>
+</html>

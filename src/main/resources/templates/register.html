@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#validation").hide();
+            $("#againInput").on("input",function(){
+                if($("#againInput").val()!=$("#passwordInput").val())
+                {
+                    $("#validation").show();
+                }else{
+                    $("#validation").hide();
+                }
+            });
+            $("#registerButton").click(function () {
+                var userName=$("#userNameInput").val();
+                var originPassword=$("#passwordInput").val();
+                if($("#againInput").val()!=originPassword){
+                    alert("前后密码不一致");
+                    return;
+                }
+                if(userName.length<3){
+                    alert("用户名必须满足规定长度");
+                    return;
+                }
+                $.ajax({
+                    type:"POST",
+                    url:"/register/do",
+                    data:{
+                        username:userName,
+                        password:originPassword,
+                        _csrf:$("#_csrf").val()
+                    },
+                    success:function(result){
+                        $(window).attr("location","/register/result?success");
+                    },
+                    error:function(result){
+                        // $.delay(10000);
+                        $(window).attr("location","/register/result?fail");
+                    }
+                })
+            });
+        })
+    </script>
+    <style>
+        .AtTheCenter{
+            position:relative;
+            width: 30%;
+            height: 300px;
+            margin:50px auto;
+        }
+        .item {
+            height:20%;
+            margin:5%;
+        }
+        #userNameInput, #passwordInput,#againInput,#registerButton{
+            display: block;
+            margin: 0 auto;
+        }
+        label,#validation{
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #validation{
+            color: #8e0d1d;
+        }
+
+    </style>
+</head>
+<body>
+<div class="AtTheCenter">
+    <div class="item">
+        <label>用户名:</label>
+        <input id="userNameInput" type="text" placeholder="username" />
+    </div>
+    <div class="item">
+        <label>密码</label>
+        <input id="passwordInput" type="password" placeholder="password" />
+    </div>
+    <div class="item">
+        <label>再次输入密码</label>
+        <input id="againInput" type="password" placeholder=""/>
+        <div id="validation" >两次密码不同</div>
+    </div>
+    <div class="item">
+        <button id="registerButton">注册</button>
+    </div>
+    <input th:attr="name=${_csrf.getParameterName()},value=${_csrf.getToken()}" type="hidden" id="_csrf">
+</div>
+</body>
+</html>

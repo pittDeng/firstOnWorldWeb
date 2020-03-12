@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #atTheCenter{
+            position: relative;
+            width:50%;
+            height:50px;
+            margin:100px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="atTheCenter">
+        <div id="success" th:if="${param.success}">
+            您已经注册成功，点击前往<a href="/login">登陆</a>
+        </div>
+        <div id="fail" th:unless="${param.success}">
+            对不起，您的用户名已经被使用，注册失败，点击<a href="/register">再次注册</a>
+        </div>
+    </div>
+</body>
+</html>

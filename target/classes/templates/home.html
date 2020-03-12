@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+            border:0;
+        }
+        #unlogin{
+            position: absolute;left: 50%;top: 50%;
+            height: 300px;
+            width: 300px;
+            margin-top: -150px;
+            margin-left: -150px;
+        }
+        #toolbar{
+            display: block;
+            position: relative;
+            height: 20px;
+        }
+        #logoutButton{
+            position: relative;
+            float: left;
+            width:50px;
+            height: 100%;
+        }
+        #logoutButton>input{
+            display: block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        .toolbarItem{
+            float: left;
+        }
+        #articleList{
+            display: block;
+            position: relative;
+            margin-top: 10px;
+            width:70%;
+            left:30%;
+            margin-left: -15%;
+        }
+        .article{
+            display: block;
+            position: relative;
+            height: auto;
+            background: white;
+            overflow: hidden;
+        }
+        .articleHeader{
+            display: block;
+            position: relative;
+            height: 30px;
+            margin-bottom: 5px;
+            background-color: #8f928f;
+        }
+        .articleHeader > *{
+            color: #faf4f4;
+        }
+        .articleTitle{
+            float: left;
+        }
+        .authorName{
+            float: right;
+            margin-right: 5px;
+        }
+        .articleContent{
+            height: 65px;
+        }
+    </style>
+    <script src="js/jquery.min.js" ></script>
+    <script src="js/loadDataAndRendering.js"></script>
+</head>
+<body>
+<div id="unlogin" th:unless="${username}">
+<div th:if="${msg}">
+<p th:text="'hello,'+${msg}"></p>
+</div>
+<div th:if="${msg}">
+    <p th:text="|${msg},hello ${god}|"></p>
+</div>
+    <h1>Welcome to my website!</h1>
+<h1>欢迎来到敝站</h1>
+    <a href="login.html">login(登录)</a>
+</div>
+
+
+<div id="alreadyLogin" th:if="${username}">
+    <div id="toolbar">
+    <form action="/logout" method="post" id="logoutButton">
+            <input th:attr="name=${_csrf.getParameterName()},value=${_csrf.getToken()}" type="hidden">
+            <input type="submit" value="登出">
+    </form>
+        <div class="toolbarItem">欢迎您，尊敬的<span th:text="${username}">dsh</span></div>
+        <div class="toolbarItem"><a href="/writearticle">发文</a></div>
+    </div>
+    <div id="articleList">
+    </div>
+</div>
+</body>
+
+</html>
